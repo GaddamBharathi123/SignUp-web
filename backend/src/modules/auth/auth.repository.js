@@ -1,24 +1,10 @@
-/**
- * modules/auth/auth.repository.js — Data Access Layer  (Infrastructure Layer)
- *
- * The ONLY place in the application that talks to MongoDB via Mongoose.
- * Services call repository methods; they never import Mongoose or the model directly.
- *
- * Equivalent to .NET's Repository pattern / IUserRepository.
- *
- * Rules:
- *  - No business logic here — just raw data operations.
- *  - Every method is async and uses await.
- *  - Throw errors upward; let the service/error-handler decide how to respond.
- */
 
 const User = require("./auth.model");
 
 /**
- * Create and persist a new user document.
- *
- * @param {{ name, email, password }} userData - Pre-hashed password expected.
- * @returns {Promise<User>} The saved Mongoose document.
+
+ * @param {{ name, email, password }} 
+ * @returns {Promise<User>} 
  */
 const createUser = async (userData) => {
   const user = new User(userData);
@@ -26,9 +12,7 @@ const createUser = async (userData) => {
 };
 
 /**
- * Find a user by email.
- * By default, `password` and `refreshToken` are excluded (select: false).
- *
+
  * @param {string} email
  * @returns {Promise<User|null>}
  */
@@ -37,9 +21,7 @@ const findUserByEmail = async (email) => {
 };
 
 /**
- * Find a user by email AND include the hashed password field.
- * Used only during login to compare the submitted password.
- *
+
  * @param {string} email
  * @returns {Promise<User|null>}
  */
@@ -58,11 +40,9 @@ const findUserById = async (id) => {
 };
 
 /**
- * Save a refresh token against the user record.
- * Called after login / token refresh.
- *
+ 
  * @param {string} userId
- * @param {string} refreshToken - The raw (un-hashed) refresh JWT.
+ * @param {string} 
  * @returns {Promise<User|null>}
  */
 const saveRefreshToken = async (userId, refreshToken) => {
@@ -88,14 +68,11 @@ const clearRefreshToken = async (userId) => {
 };
 
 /**
- * Find a user whose stored refreshToken matches the provided token.
- * Used during the /refresh flow to validate that the token is still active.
- *
+ 
  * @param {string} refreshToken
  * @returns {Promise<User|null>}
  */
 const findUserByRefreshToken = async (refreshToken) => {
-  // We must select("+refreshToken") because the field has select:false
   return User.findOne({ refreshToken }).select("+refreshToken");
 };
 

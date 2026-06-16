@@ -2,8 +2,8 @@
 
 /**
 
- * @param {import('./auth.model')} user - A Mongoose User document.
- * @returns {Object} Safe user object.
+ * @param {import('./auth.model')} 
+ * @returns {Object} 
  */
 const userDTO = (user) => ({
   id: user._id,
@@ -15,10 +15,10 @@ const userDTO = (user) => ({
 
 /**
  *
- * @param {string} accessToken  - Short-lived JWT.
- * @param {string} refreshToken - Long-lived JWT.
- * @param {import('./auth.model')} user - Mongoose User document.
- * @returns {Object} Login response payload.
+ * @param {string} 
+ * @param {string} 
+ * @param {import('./auth.model')} 
+ * @returns {Object} 
  */
 const authResponseDTO = (accessToken, refreshToken, user) => ({
   accessToken,

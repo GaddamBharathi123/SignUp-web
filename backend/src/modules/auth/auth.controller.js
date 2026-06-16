@@ -3,9 +3,9 @@ const authService = require("./auth.service");
 const { sendSuccess, sendError } = require("../../utils/response");
 
 /**
- * @route   POST /api/v1/auth/register
- * @access  Public
- * @desc    Register a new user account
+ * @route  
+ * @access  
+ * @desc    
  */
 const register = async (req, res, next) => {
   try {
@@ -19,9 +19,9 @@ const register = async (req, res, next) => {
 };
 
 /**
- * @route   POST /api/v1/auth/login
- * @access  Public
- * @desc    Authenticate user and return JWT tokens
+ * @route   
+ * @access  
+ * @desc   
  */
 const login = async (req, res, next) => {
   try {
@@ -35,9 +35,9 @@ const login = async (req, res, next) => {
 };
 
 /**
- * @route   GET /api/v1/auth/me
- * @access  Protected (requires Bearer token)
- * @desc    Return the logged-in user's profile
+ * @route   
+ * @access  
+ * @desc     
  */
 const getMe = async (req, res, next) => {
   try {
@@ -51,9 +51,9 @@ const getMe = async (req, res, next) => {
 };
 
 /**
- * @route   POST /api/v1/auth/logout
- * @access  Protected (requires Bearer token)
- * @desc    Invalidate the refresh token — ends the user's session
+ * @route   
+ * @access  
+ * @desc    
  */
 const logout = async (req, res, next) => {
   try {
@@ -66,9 +66,9 @@ const logout = async (req, res, next) => {
 };
 
 /**
- * @route   POST /api/v1/auth/refresh
- * @access  Public (uses refresh token in body, not access token)
- * @desc    Issue a new access token (and rotate the refresh token)
+ * @route  
+ * @access  
+ * @desc    
  */
 const refresh = async (req, res, next) => {
   try {
