@@ -6,4 +6,4 @@ backend/node_modules/
 frontend/node_modules/
 
 dist/
-build/
+build/node_modules/

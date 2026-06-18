@@ -1,10 +1,3 @@
-
-
-/**
-
- * @param {import('./auth.model')} 
- * @returns {Object} 
- */
 const userDTO = (user) => ({
   id: user._id,
   name: user.name,
@@ -13,13 +6,6 @@ const userDTO = (user) => ({
   updatedAt: user.updatedAt,
 });
 
-/**
- *
- * @param {string} 
- * @param {string} 
- * @param {import('./auth.model')} 
- * @returns {Object} 
- */
 const authResponseDTO = (accessToken, refreshToken, user) => ({
   accessToken,
   refreshToken,

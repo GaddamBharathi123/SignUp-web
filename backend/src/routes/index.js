@@ -1,4 +1,3 @@
-
 const { Router } = require("express");
 const authRoutes = require("../modules/auth/auth.routes");
 
