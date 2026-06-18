@@ -1,18 +1,18 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
-import ForgotPassword from "./ForgotPassword";
-import VerifyOtp from "./VerifyOtp";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Default route → Register page */}
         <Route path="/" element={<Navigate to="/register" replace />} />
+
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/login"    element={<Login />} />
+
+        {/* Catch-all: any unknown URL → back to register */}
         <Route path="*" element={<Navigate to="/register" replace />} />
       </Routes>
     </BrowserRouter>

@@ -6,8 +6,9 @@ function Login() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [error, setError]       = useState("");
+  const [loading, setLoading]   = useState(false);
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,9 +22,12 @@ function Login() {
 
     try {
       const res = await api.post("/auth/login", formData);
+
       const { accessToken, refreshToken } = res.data.data;
+
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
+
       navigate("/dashboard");
     } catch (err) {
       const msg = err.response?.data?.message || "Login failed. Please try again.";
@@ -33,11 +37,13 @@ function Login() {
     }
   };
 
+  // ── Render ──────────────────────────────────────────────────────────────────
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-secondary">
       <div className="bg-white p-3 rounded w-25">
         <h2>Login</h2>
 
+        {/* Error banner */}
         {error && (
           <div className="alert alert-danger py-2" role="alert">
             {error}
@@ -45,6 +51,7 @@ function Login() {
         )}
 
         <form onSubmit={handleSubmit}>
+          {/* Email */}
           <div className="mb-3">
             <label htmlFor="login-email">
               <strong>Email</strong>
@@ -62,6 +69,7 @@ function Login() {
             />
           </div>
 
+          {/* Password */}
           <div className="mb-3">
             <label htmlFor="login-password">
               <strong>Password</strong>
@@ -86,16 +94,6 @@ function Login() {
           >
             {loading ? "Logging in…" : "Login"}
           </button>
-
-          <div className="text-end mt-2">
-            <span
-              className="text-primary"
-              style={{ cursor: "pointer", fontSize: "14px" }}
-              onClick={() => navigate("/forgot-password")}
-            >
-              Login with OTP
-            </span>
-          </div>
 
           <p className="mt-2 mb-1">Don't have an account?</p>
 
