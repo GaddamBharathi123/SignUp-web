@@ -68,10 +68,29 @@ const verifyOtpRules = [
     .withMessage("OTP must contain only numbers"),
 ];
 
+const verifyLoginOtpRules = [
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("Email is required")
+    .isEmail()
+    .withMessage("Please provide a valid email address")
+    .normalizeEmail(),
+  body("otp")
+    .trim()
+    .notEmpty()
+    .withMessage("OTP is required")
+    .isLength({ min: 6, max: 6 })
+    .withMessage("OTP must be 6 digits")
+    .isNumeric()
+    .withMessage("OTP must contain only numbers"),
+];
+
 module.exports = {
   registerRules,
   loginRules,
   refreshRules,
   sendOtpRules,
   verifyOtpRules,
+  verifyLoginOtpRules,
 };

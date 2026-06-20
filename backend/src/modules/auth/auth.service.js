@@ -34,12 +34,56 @@ const login = async ({ email, password }) => {
   if (!user) {
     throw httpError(401, "Invalid email or password.");
   }
+
   const isMatch = await comparePassword(password, user.password);
   if (!isMatch) {
     throw httpError(401, "Invalid email or password.");
   }
+
+  const otp = generateOtp();
+  const otpExpiry = generateOtpExpiry();
+  await repo.saveOtp(user._id, otp, otpExpiry);
+  await sendOtpEmail(user.email, otp);
+
+  return { email: user.email };
+};
+
+const verifyLoginOtp = async ({ email, otp }) => {
+  const user = await repo.findUserByEmailWithOtp(email);
+  if (!user) {
+    throw httpError(404, "No account found with this email address.");
+  }
+
+  if (!user.otp || !user.otpExpiry) {
+    throw httpError(400, "No OTP was requested. Please log in again.");
+  }
+
+  if (isOtpExpired(user.otpExpiry)) {
+    await repo.clearOtp(user._id);
+    throw httpError(410, "OTP has expired. Please log in again.");
+  }
+
+  if (user.otp !== otp) {
+    throw httpError(401, "Invalid OTP. Please check and try again.");
+  }
+
+  await repo.clearOtp(user._id);
   const { accessToken, refreshToken } = await issueTokens(user);
   return authResponseDTO(accessToken, refreshToken, user);
+};
+
+const resendLoginOtp = async ({ email }) => {
+  const user = await repo.findUserByEmail(email);
+  if (!user) {
+    throw httpError(404, "No account found with this email address.");
+  }
+
+  const otp = generateOtp();
+  const otpExpiry = generateOtpExpiry();
+  await repo.saveOtp(user._id, otp, otpExpiry);
+  await sendOtpEmail(user.email, otp);
+
+  return { email: user.email };
 };
 
 const getMe = async (userId) => {
@@ -101,4 +145,14 @@ const verifyOtp = async ({ email, otp }) => {
   return authResponseDTO(accessToken, refreshToken, user);
 };
 
-module.exports = { register, login, getMe, logout, refresh, sendOtp, verifyOtp };
+module.exports = {
+  register,
+  login,
+  verifyLoginOtp,
+  resendLoginOtp,
+  getMe,
+  logout,
+  refresh,
+  sendOtp,
+  verifyOtp,
+};

@@ -15,7 +15,27 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const data = await authService.login({ email, password });
+    return sendSuccess(res, 200, `OTP sent to ${data.email}. Please verify to complete login.`, data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const verifyLoginOtp = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body;
+    const data = await authService.verifyLoginOtp({ email, otp });
     return sendSuccess(res, 200, "Login successful.", data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const resendLoginOtp = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const data = await authService.resendLoginOtp({ email });
+    return sendSuccess(res, 200, `A new OTP has been sent to ${data.email}.`);
   } catch (error) {
     next(error);
   }
@@ -69,4 +89,14 @@ const verifyOtp = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getMe, logout, refresh, sendOtp, verifyOtp };
+module.exports = {
+  register,
+  login,
+  verifyLoginOtp,
+  resendLoginOtp,
+  getMe,
+  logout,
+  refresh,
+  sendOtp,
+  verifyOtp,
+};
