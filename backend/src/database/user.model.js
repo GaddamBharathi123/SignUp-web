@@ -38,6 +38,18 @@ const userSchema = new mongoose.Schema(
       default: null,
       select: false,
     },
+    loginAttempts: {
+      type: Number,
+      default: 0,
+    },
+    lockedUntil: {
+      type: Date,
+      default: null,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,
@@ -48,6 +60,8 @@ const userSchema = new mongoose.Schema(
         delete ret.refreshToken;
         delete ret.otp;
         delete ret.otpExpiry;
+        delete ret.loginAttempts;
+        delete ret.lockedUntil;
         return ret;
       },
     },

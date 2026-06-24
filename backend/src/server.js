@@ -1,20 +1,20 @@
 const { connectDB } = require("./config/db");
-const { PORT } = require("./config/env");
+const { createLogger } = require("./app/http/services/logger.service");
+const environment = require("./config/environment");
 const app = require("./app");
+
+const log = createLogger("server");
 
 const startServer = async () => {
   try {
-    // 1. Establish MongoDB connection before accepting traffic
     await connectDB();
-
-    // 2. Start listening
-    app.listen(PORT, () => {
-      console.log(`✅  Server running on http://localhost:${PORT}`);
-      console.log(`🌍  Environment : ${process.env.NODE_ENV || "development"}`);
+    app.listen(environment.basic.port, () => {
+      log.info(`Server running on http://localhost:${environment.basic.port}`);
+      log.info(`Environment: ${environment.basic.env}`);
     });
   } catch (error) {
-    console.error("❌  Failed to start server:", error.message);
-    process.exit(1); // Exit with failure code so process managers can restart
+    log.exception("Failed to start server", error);
+    process.exit(1);
   }
 };
 

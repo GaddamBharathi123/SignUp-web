@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
-const { sendError } = require("../utils/response");
+const { sendError } = require("../services/response.service");
+const ERROR_CODES = require("../../core/constants/http.constants");
 
 const validate = (req, res, next) => {
   const errors = validationResult(req);
@@ -9,7 +10,7 @@ const validate = (req, res, next) => {
       field: err.path,
       message: err.msg,
     }));
-    return sendError(res, 422, "Validation failed", formattedErrors);
+    return sendError(res, 422, "Validation failed", ERROR_CODES.VALIDATION_ERROR, formattedErrors);
   }
 
   next();

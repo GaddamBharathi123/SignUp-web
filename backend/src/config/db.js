@@ -1,21 +1,22 @@
-
 const mongoose = require("mongoose");
-const { MONGO_URI } = require("./env");
+const environment = require("./environment");
+const { createLogger } = require("../app/http/services/logger.service");
+
+const log = createLogger("database");
+
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(MONGO_URI, {
-    });
-
-    console.log(`  MongoDB connected: ${conn.connection.host}`);
+    const conn = await mongoose.connect(environment.database.uri);
+    log.info(`MongoDB connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error("  MongoDB connection error:", error.message);
-  
+    log.error(`MongoDB connection error: ${error.message}`);
     throw error;
   }
 };
+
 const disconnectDB = async () => {
   await mongoose.connection.close();
-  console.log(" MongoDB disconnected");
+  log.info("MongoDB disconnected");
 };
 
 module.exports = { connectDB, disconnectDB };
